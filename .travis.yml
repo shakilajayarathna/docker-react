@@ -3,9 +3,19 @@ services:
   - docker
 
 before_install:
-- docker build -t shakilajayarathna/docker-react -f Dockerfile.dev .
+  - docker build -t shakilajayarathna/docker-react -f Dockerfile.dev .
   #- docker build -t stephengrider/docker-react -f Dockerfile.dev .
   
 script:
-- docker run shakilajayarathna/docker-react npm run test -- --coverage
+  - docker run shakilajayarathna/docker-react npm run test -- --coverage
   #- docker run stephengrider/docker-react npm run test -- --coverage
+
+deploy: 
+  provider: elasticbeanstalk
+  region: "us-west-2"
+  app: "docker"
+  env: "Docker-env",
+  bucket_name: "elasticbeanstalk-us-west-2-306476627547"
+  bucket_path: "docker"
+  on:
+    branch: master
